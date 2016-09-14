@@ -26,11 +26,8 @@ trait MonitoringFilter extends Filter with HttpAPIMonitor {
 
   val urlPatternToNameMapping: Map[String, String]
 
-  def apiName(uri: String, method: String) = {
-    urlPatternToNameMapping.find { keyValue => uri.matches(keyValue._1) } match {
-      case Some(keyValue) => Some(s"API-${keyValue._2}-$method")
-      case None => None
-    }
+  def apiName(uri: String, method: String): Option[String] = {
+    urlPatternToNameMapping.find { keyValue => uri.matches(keyValue._1) } map { keyValue => s"API-${keyValue._2}-$method" }
   }
 
   override def apply(nextFilter: (RequestHeader) => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
