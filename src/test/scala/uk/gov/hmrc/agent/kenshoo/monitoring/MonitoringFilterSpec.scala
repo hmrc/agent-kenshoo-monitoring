@@ -24,6 +24,14 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.http.HttpEntity
+import com.codahale.metrics.MetricRegistry
+import org.scalatest.mock.MockitoSugar
+import org.scalatest.mock.MockitoSugar
+import akka.stream.Materializer
+import akka.stream.ActorMaterializer
+import akka.actor.ActorSystem
+import org.mockito.Mockito.mock
 
 class MonitoringFilterSpec extends UnitSpec {
 
@@ -31,12 +39,12 @@ class MonitoringFilterSpec extends UnitSpec {
 
   "monitoring filter" should {
     "monitor known incoming requests" in new MonitoringFilterTestImp {
-      await(apply(requestHeader => Future(Result(ResponseHeader(200), Enumerator())))(TestRequestHeader("/agent/agentcode", "GET")))
+      await(apply(requestHeader => Future(Result(ResponseHeader(200), HttpEntity.NoEntity)))(TestRequestHeader("/agent/agentcode", "GET")))
       assertRequestIsMonitoredAs("API-Agent-GET")
     }
 
     "do not monitor unknown incoming requests" in new MonitoringFilterTestImp {
-      await(apply(requestHeader => Future(Result(ResponseHeader(200), Enumerator())))(TestRequestHeader("/agent/client/empref", "GET")))
+      await(apply(requestHeader => Future(Result(ResponseHeader(200), HttpEntity.NoEntity)))(TestRequestHeader("/agent/client/empref", "GET")))
       assertRequestIsNotMonitored()
     }
   }
@@ -49,17 +57,17 @@ case class TestRequestHeader(expectedUri: String, expectedMethod: String) extend
   override def remoteAddress: String = ""
   override def queryString: Map[String, Seq[String]] = Map()
   override def method: String = expectedMethod
-  override def headers: Headers = new Headers {
-    override protected val data: Seq[(String, Seq[String])] = Seq()
-  }
+  override def headers: Headers = new Headers(Seq()) 
   override def path: String = ""
   override def version: String = ""
   override def tags: Map[String, String] = Map()
+  override def clientCertificateChain = None
 }
 
 
-class MonitoringFilterTestImp extends MonitoringFilter with Matchers {
-  override val urlPatternToNameMapping: Map[String, String] = Map("/agent/agentcode" -> "Agent")
+class MonitoringFilterTestImp extends MonitoringFilter(Map("/agent/agentcode" -> "Agent"), mock(classOf[MetricRegistry])) with Matchers {
+  implicit val system = ActorSystem("Tests")
+  override implicit val mat: Materializer = ActorMaterializer()
 
   var serviceName : String = ""
 

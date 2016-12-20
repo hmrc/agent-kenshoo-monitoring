@@ -21,10 +21,9 @@ import play.api.mvc.{Filter, RequestHeader, Result}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import com.codahale.metrics.MetricRegistry
 
-trait MonitoringFilter extends Filter with HttpAPIMonitor {
-
-  val urlPatternToNameMapping: Map[String, String]
+abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], override val kenshooRegistry: MetricRegistry) extends Filter with HttpAPIMonitor {
 
   def apiName(uri: String, method: String): Option[String] = {
     urlPatternToNameMapping.find { keyValue => uri.matches(keyValue._1) } map { keyValue => s"API-${keyValue._2}-$method" }

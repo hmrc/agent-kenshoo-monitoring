@@ -28,6 +28,8 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import com.codahale.metrics.MetricRegistry
+import org.scalatest.mock.MockitoSugar
 
 class HttpErrorMeterSpec extends UnitSpec {
 
@@ -39,7 +41,7 @@ class HttpErrorMeterSpec extends UnitSpec {
         await(countErrors("servicename") {
           Future.successful(HttpResponse(status))
         })
-        verify(registry, never()).getTimers
+        verify(kenshooRegistry, never()).getTimers
       }
     }
   }
@@ -50,7 +52,7 @@ class HttpErrorMeterSpec extends UnitSpec {
         await(countErrors("servicename") {
           Future.successful(HttpResponse(status))
         })
-        verify(registry, never()).getTimers
+        verify(kenshooRegistry, never()).getTimers
       }
     }
   }
@@ -137,9 +139,10 @@ class HttpErrorMeterSpec extends UnitSpec {
 
 }
 
-class HttpErrorRateMeterTest extends HttpErrorRateMeter with MockedKenshooRegistry {
+class HttpErrorRateMeterTest extends HttpErrorRateMeter with MockitoSugar {
+  val kenshooRegistry = mock[MetricRegistry]
   val errorMeter4xx = mock[Meter]
   val errorMeter5xx = mock[Meter]
-  given(registry.meter("Http4xxErrorCount-servicename")).willReturn(errorMeter4xx)
-  given(registry.meter("Http5xxErrorCount-servicename")).willReturn(errorMeter5xx)
+  given(kenshooRegistry.meter("Http4xxErrorCount-servicename")).willReturn(errorMeter4xx)
+  given(kenshooRegistry.meter("Http5xxErrorCount-servicename")).willReturn(errorMeter5xx)
 }

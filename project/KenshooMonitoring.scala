@@ -49,16 +49,16 @@ object KenshooMonitoringBuild extends Build {
 object Dependencies {
 
   object Compile {
-    val kenshoo = "com.kenshoo" %% "metrics-play" % "2.3.0_0.2.1"
-    val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "5.0.0"
+    val kenshoo = "com.kenshoo" %% "metrics-play" % "2.4.0_0.4.1"
+    val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "6.2.0"
     val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
   }
 
   object Test {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
     val restAssured = "com.jayway.restassured" % "rest-assured" % "2.6.0" % "test"
     val mockito = "org.mockito" % "mockito-core" % "1.9.5" % "test"
-    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "1.8.0" % "test"
+    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "2.2.0" % "test"
   }
 
 }
