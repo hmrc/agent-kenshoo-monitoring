@@ -21,8 +21,11 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
+import com.codahale.metrics.MetricRegistry
 
-trait AverageResponseTimer extends KenshooMetric {
+trait AverageResponseTimer {
+  val kenshooRegistry: MetricRegistry
+
   def timer[T](serviceName: String)(function: => Future[T])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[T] = {
     val start = System.nanoTime()
     function.andThen {

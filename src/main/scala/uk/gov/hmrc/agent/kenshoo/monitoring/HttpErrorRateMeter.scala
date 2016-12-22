@@ -22,8 +22,10 @@ import uk.gov.hmrc.play.http.{HttpException, HttpResponse, Upstream4xxResponse, 
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
+import com.codahale.metrics.MetricRegistry
 
-trait HttpErrorRateMeter extends KenshooMetric {
+trait HttpErrorRateMeter {
+  val kenshooRegistry: MetricRegistry
   def meterName[T](serviceName: String, statusCode: Int): String = {
     if (statusCode >= 500) s"Http5xxErrorCount-$serviceName" else s"Http4xxErrorCount-$serviceName"
   }

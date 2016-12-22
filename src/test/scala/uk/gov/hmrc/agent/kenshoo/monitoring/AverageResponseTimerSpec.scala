@@ -29,6 +29,8 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import com.codahale.metrics.MetricRegistry
+import org.scalatest.mock.MockitoSugar
 
 class AverageResponseTimerSpec extends UnitSpec {
 
@@ -36,7 +38,7 @@ class AverageResponseTimerSpec extends UnitSpec {
 
   "timer" should {
     "update kenshoo timer for service if one already exists" in new AverageResponseTimerTest {
-      given(registry.getTimers).willReturn(new util.TreeMap[String, Timer]() {
+      given(kenshooRegistry.getTimers).willReturn(new util.TreeMap[String, Timer]() {
         {
           put("Timer-servicename", kenshooTimer)
         }
@@ -50,7 +52,7 @@ class AverageResponseTimerSpec extends UnitSpec {
     }
 
     "update kenshoo timer for service if one doesn't exists" in new AverageResponseTimerTest {
-      given(registry.timer("Timer-servicename")).willReturn(kenshooTimer)
+      given(kenshooRegistry.timer("Timer-servicename")).willReturn(kenshooTimer)
 
       await(timer("servicename") {
         Future(Thread.sleep(100))
@@ -64,6 +66,7 @@ class AverageResponseTimerSpec extends UnitSpec {
 
 }
 
-class AverageResponseTimerTest extends AverageResponseTimer with MockedKenshooRegistry {
+class AverageResponseTimerTest extends AverageResponseTimer with MockitoSugar {
+  val kenshooRegistry = mock[MetricRegistry]
   val kenshooTimer: Timer = mock[Timer]
 }

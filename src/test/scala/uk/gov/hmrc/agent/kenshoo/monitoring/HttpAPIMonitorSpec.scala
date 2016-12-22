@@ -29,6 +29,8 @@ import uk.gov.hmrc.play.http.HttpException
 import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import com.codahale.metrics.MetricRegistry
+import org.scalatest.mock.MockitoSugar
 
 class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
@@ -36,8 +38,8 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
   "monitor" should {
     "record invocation rate, average response time and error rate" in new HttpAPIMonitorTest {
-      given(registry.timer("Timer-servicename")).willReturn(kenshooTimer)
-      given(registry.meter("Http4xxErrorCount-servicename")).willReturn(errorMeter4xx)
+      given(kenshooRegistry.timer("Timer-servicename")).willReturn(kenshooTimer)
+      given(kenshooRegistry.meter("Http4xxErrorCount-servicename")).willReturn(errorMeter4xx)
 
       try {
         await(monitor("servicename") {
@@ -52,7 +54,8 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
   }
 }
 
-class HttpAPIMonitorTest extends HttpAPIMonitor with MockedKenshooRegistry {
+class HttpAPIMonitorTest extends HttpAPIMonitor with MockitoSugar {
+  val kenshooRegistry = mock[MetricRegistry]
   val kenshooTimer = mock[Timer]
   val errorMeter4xx = mock[Meter]
 }
