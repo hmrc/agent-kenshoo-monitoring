@@ -49,7 +49,7 @@ object KenshooMonitoringBuild extends Build {
 object Dependencies {
 
   object Compile {
-    val kenshoo = "com.kenshoo" %% "metrics-play" % "2.4.0_0.4.1"
+    val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
     val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "6.2.0"
     val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
   }
