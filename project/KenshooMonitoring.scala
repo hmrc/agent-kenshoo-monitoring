@@ -31,9 +31,21 @@ object KenshooMonitoringBuild extends Build {
     Dependencies.Test.hmrcTest
   )
 
+  lazy val scoverageSettings = {
+    import scoverage.ScoverageKeys
+    Seq(
+      // Semicolon-separated list of regexs matching classes to exclude
+      ScoverageKeys.coverageExcludedPackages := """uk.gov.hmrc.BuildInfo;com.kenshoo.play..;..Routes.;..Reverse.;..javascript..*""",
+      ScoverageKeys.coverageMinimum := 80.00,
+      ScoverageKeys.coverageFailOnMinimum := false,
+      ScoverageKeys.coverageHighlighting := true,
+      parallelExecution in Test := false
+    )
+  }
+
   lazy val kenshooMonitoring = Project("agent-kenshoo-monitoring", file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
-    .settings(scalaSettings: _*)
+    .settings(scalaSettings ++ scoverageSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
