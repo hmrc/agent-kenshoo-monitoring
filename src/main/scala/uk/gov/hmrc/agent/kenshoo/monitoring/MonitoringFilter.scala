@@ -20,7 +20,7 @@ import play.api.Logger
 import play.api.mvc.{Filter, RequestHeader, Result}
 import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.Future
-import scala.concurrent.ExecutionContext.Implicits.global
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import com.codahale.metrics.MetricRegistry
 
 abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], override val kenshooRegistry: MetricRegistry) extends Filter with HttpAPIMonitor {

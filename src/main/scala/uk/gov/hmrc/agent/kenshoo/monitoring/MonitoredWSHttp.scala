@@ -21,7 +21,7 @@ import play.api.libs.json.Writes
 import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.http.ws._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import scala.concurrent.Future
 
 trait MonitoredWSHttp extends WSHttp with HttpAPIMonitor {

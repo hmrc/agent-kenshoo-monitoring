@@ -16,20 +16,16 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
-import com.codahale.metrics.{MetricRegistry, Meter}
+import com.codahale.metrics.{Meter, MetricRegistry}
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.mockito.Mockito.{never, verify}
-import org.scalatest.{BeforeAndAfterEach, FlatSpec}
 import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.http._
+import uk.gov.hmrc.play.http.{HeaderCarrier, _}
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import com.codahale.metrics.MetricRegistry
-import org.scalatest.mock.MockitoSugar
 
 class HttpErrorMeterSpec extends UnitSpec {
 
