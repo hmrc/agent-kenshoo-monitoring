@@ -16,22 +16,18 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
+import akka.actor.ActorSystem
+import akka.stream.{ActorMaterializer, Materializer}
+import com.codahale.metrics.MetricRegistry
+import org.mockito.Mockito.mock
 import org.scalatest.Matchers
-import play.api.libs.iteratee.Enumerator
+import play.api.http.HttpEntity
 import play.api.mvc.{Headers, RequestHeader, ResponseHeader, Result}
 import uk.gov.hmrc.play.http.HeaderCarrier
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.http.HttpEntity
-import com.codahale.metrics.MetricRegistry
-import org.scalatest.mock.MockitoSugar
-import org.scalatest.mock.MockitoSugar
-import akka.stream.Materializer
-import akka.stream.ActorMaterializer
-import akka.actor.ActorSystem
-import org.mockito.Mockito.mock
 
 class MonitoringFilterSpec extends UnitSpec {
 

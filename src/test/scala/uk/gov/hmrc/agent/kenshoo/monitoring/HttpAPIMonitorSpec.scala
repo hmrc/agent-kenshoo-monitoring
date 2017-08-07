@@ -27,7 +27,7 @@ import org.scalatest.Matchers
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HttpException
 import uk.gov.hmrc.play.test.UnitSpec
-import scala.concurrent.ExecutionContext.Implicits.global
+import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
 import org.scalatest.mock.MockitoSugar

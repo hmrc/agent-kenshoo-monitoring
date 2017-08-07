@@ -62,7 +62,7 @@ object Dependencies {
 
   object Compile {
     val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
-    val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "6.3.0"
+    val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "6.4.0"
     val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
   }
 
