@@ -23,7 +23,7 @@ object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.SbtAutoBuildPlugin
   val appDependencies = Seq(
     Dependencies.Compile.kenshoo,
-    Dependencies.Compile.hmrcHttpVerbs,
+    Dependencies.Compile.microserviceBootstrap,
     Dependencies.Compile.hmrcHttpException,
     Dependencies.Test.scalaTest,
     Dependencies.Test.restAssured,
@@ -49,7 +49,7 @@ object KenshooMonitoringBuild extends Build {
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
-      scalaVersion := "2.11.8",
+      scalaVersion := "2.11.11",
       libraryDependencies ++= appDependencies,
       crossScalaVersions := Seq("2.11.8")
     )
@@ -62,7 +62,7 @@ object Dependencies {
 
   object Compile {
     val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
-    val hmrcHttpVerbs = "uk.gov.hmrc" %% "http-verbs" % "6.4.0"
+    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "6.9.0"
     val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
   }
 

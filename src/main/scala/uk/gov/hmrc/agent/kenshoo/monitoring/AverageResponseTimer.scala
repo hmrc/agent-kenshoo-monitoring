@@ -17,11 +17,11 @@
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import play.api.Logger
-import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import com.codahale.metrics.MetricRegistry
+import uk.gov.hmrc.http.HeaderCarrier
 
 trait AverageResponseTimer {
   val kenshooRegistry: MetricRegistry

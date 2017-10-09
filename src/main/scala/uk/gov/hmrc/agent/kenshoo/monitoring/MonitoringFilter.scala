@@ -18,8 +18,9 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import play.api.Logger
 import play.api.mvc.{Filter, RequestHeader, Result}
-import uk.gov.hmrc.play.http.HeaderCarrier
+
 import scala.concurrent.Future
+import uk.gov.hmrc.play.HeaderCarrierConverter.fromHeadersAndSession
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import com.codahale.metrics.MetricRegistry
 
@@ -30,7 +31,7 @@ abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], ov
   }
 
   override def apply(nextFilter: (RequestHeader) => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
-    implicit val hc = HeaderCarrier.fromHeadersAndSession(requestHeader.headers)
+    implicit val hc = fromHeadersAndSession(requestHeader.headers)
 
     apiName(requestHeader.uri, requestHeader.method) match {
       case None =>
