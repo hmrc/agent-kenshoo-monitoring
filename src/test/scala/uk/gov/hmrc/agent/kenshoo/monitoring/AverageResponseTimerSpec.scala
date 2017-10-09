@@ -24,13 +24,13 @@ import org.hamcrest.Matchers.greaterThanOrEqualTo
 import org.mockito.BDDMockito.given
 import org.mockito.Matchers.longThat
 import org.mockito.Mockito.verify
-import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
+
 import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
 import org.scalatest.mock.MockitoSugar
+import uk.gov.hmrc.http.HeaderCarrier
 
 class AverageResponseTimerSpec extends UnitSpec {
 

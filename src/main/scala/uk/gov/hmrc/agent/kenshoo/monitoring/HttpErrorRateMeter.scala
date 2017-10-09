@@ -17,12 +17,11 @@
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import play.api.Logger
-import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.http.{HttpException, HttpResponse, Upstream4xxResponse, Upstream5xxResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 import com.codahale.metrics.MetricRegistry
+import uk.gov.hmrc.http._
 
 trait HttpErrorRateMeter {
   val kenshooRegistry: MetricRegistry

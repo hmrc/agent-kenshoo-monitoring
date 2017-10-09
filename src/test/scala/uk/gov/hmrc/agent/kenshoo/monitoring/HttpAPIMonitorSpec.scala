@@ -24,13 +24,13 @@ import org.mockito.BDDMockito._
 import org.mockito.Matchers._
 import org.mockito.Mockito._
 import org.scalatest.Matchers
-import uk.gov.hmrc.play.http.HeaderCarrier
-import uk.gov.hmrc.play.http.HttpException
-import uk.gov.hmrc.play.test.UnitSpec
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
+
 import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
 import org.scalatest.mock.MockitoSugar
+import uk.gov.hmrc.http.{HeaderCarrier, HttpException}
+import uk.gov.hmrc.play.test.UnitSpec
 
 class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
