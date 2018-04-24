@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,28 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
-import java.util
 import java.util.concurrent.TimeUnit
+import java.{lang, util}
 
-import com.codahale.metrics.Timer
-import org.hamcrest.Matchers.greaterThanOrEqualTo
+import com.codahale.metrics.{MetricRegistry, Timer}
+import org.mockito.ArgumentMatcher
+import org.mockito.ArgumentMatchers._
 import org.mockito.BDDMockito.given
-import org.mockito.Matchers.longThat
 import org.mockito.Mockito.verify
+import org.scalatest.mockito.MockitoSugar
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 
 import scala.concurrent.Future
-import com.codahale.metrics.MetricRegistry
-import org.scalatest.mock.MockitoSugar
-import uk.gov.hmrc.http.HeaderCarrier
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class AverageResponseTimerSpec extends UnitSpec {
 
   implicit val hc = HeaderCarrier()
+
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
+    override def matches(argument: lang.Long): Boolean = argument >= l
+  }
 
   "timer" should {
     "update kenshoo timer for service if one already exists" in new AverageResponseTimerTest {
@@ -48,7 +51,7 @@ class AverageResponseTimerSpec extends UnitSpec {
         Future(Thread.sleep(1000))
       })
 
-      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(millisToNano(1000))), org.mockito.Matchers.eq(TimeUnit.NANOSECONDS))
+      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(millisToNano(1000))), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
     "update kenshoo timer for service if one doesn't exists" in new AverageResponseTimerTest {
@@ -58,7 +61,7 @@ class AverageResponseTimerSpec extends UnitSpec {
         Future(Thread.sleep(100))
       })
 
-      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(millisToNano(100))), org.mockito.Matchers.eq(TimeUnit.NANOSECONDS))
+      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(millisToNano(100))), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
   }
 

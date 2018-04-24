@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,30 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
+import java.lang
 import java.util.concurrent.TimeUnit
 
 import com.codahale.metrics.{Meter, Timer}
-import org.hamcrest.Matchers._
 import org.mockito.BDDMockito._
-import org.mockito.Matchers._
+import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.Matchers
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 
 import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
-import org.scalatest.mock.MockitoSugar
+import org.mockito.ArgumentMatcher
+import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.http.{HeaderCarrier, HttpException}
 import uk.gov.hmrc.play.test.UnitSpec
 
 class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
   implicit val hc = HeaderCarrier()
+
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
+    override def matches(argument: lang.Long): Boolean = argument >= l
+  }
 
   "monitor" should {
     "record invocation rate, average response time and error rate" in new HttpAPIMonitorTest {
@@ -48,7 +53,7 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
       } catch {
         case ex: Throwable => ()
       }
-      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(10000000L)), org.mockito.Matchers.eq(TimeUnit.NANOSECONDS))
+      verify(kenshooTimer).update(longThat(greaterThanOrEqualTo(10000000L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
       verify(errorMeter4xx).mark()
     }
   }
