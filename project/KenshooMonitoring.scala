@@ -21,14 +21,14 @@ import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.SbtAutoBuildPlugin
+
   val appDependencies = Seq(
-    Dependencies.Compile.kenshoo,
-    Dependencies.Compile.microserviceBootstrap,
-    Dependencies.Compile.hmrcHttpException,
-    Dependencies.Test.scalaTest,
-    Dependencies.Test.restAssured,
-    Dependencies.Test.mockito,
-    Dependencies.Test.hmrcTest
+    "uk.gov.hmrc" %% "bootstrap-play-25" % "1.5.0",
+    "de.threedimensions" %% "metrics-play" % "2.5.13",
+
+    "org.scalatest" %% "scalatest" % "3.0.5" % "test",
+    "org.mockito" % "mockito-core" % "2.18.3" % "test",
+    "uk.gov.hmrc" %% "hmrctest" % "3.0.0" % "test"
   )
 
   lazy val scoverageSettings = {
@@ -49,28 +49,10 @@ object KenshooMonitoringBuild extends Build {
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
-      scalaVersion := "2.11.11",
       libraryDependencies ++= appDependencies,
       crossScalaVersions := Seq("2.11.8")
     )
     .settings(publishAllArtefacts : _*)
     .settings(resolvers += Resolver.bintrayRepo("hmrc", "releases"))
     .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
-}
-
-object Dependencies {
-
-  object Compile {
-    val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
-    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "6.9.0"
-    val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
-  }
-
-  object Test {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
-    val restAssured = "com.jayway.restassured" % "rest-assured" % "2.6.0" % "test"
-    val mockito = "org.mockito" % "mockito-core" % "1.9.5" % "test"
-    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "2.3.0" % "test"
-  }
-
 }
