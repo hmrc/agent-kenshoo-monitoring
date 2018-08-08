@@ -62,15 +62,15 @@ object Dependencies {
 
   object Compile {
     val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
-    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "6.9.0"
-    val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.0.0"
+    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0"
+    val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.1.0"
   }
 
   object Test {
     val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
     val restAssured = "com.jayway.restassured" % "rest-assured" % "2.6.0" % "test"
     val mockito = "org.mockito" % "mockito-core" % "1.9.5" % "test"
-    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "2.3.0" % "test"
+    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "2.4.0" % "test"
   }
 
 }
