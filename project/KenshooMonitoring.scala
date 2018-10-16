@@ -21,6 +21,10 @@ import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.SbtAutoBuildPlugin
+  import uk.gov.hmrc.SbtArtifactory
+  import uk.gov.hmrc.versioning.SbtGitVersioning
+  import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
+  import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 
   val appDependencies = Seq(
     "uk.gov.hmrc" %% "bootstrap-play-25" % "1.5.0",
@@ -44,7 +48,8 @@ object KenshooMonitoringBuild extends Build {
   }
 
   lazy val kenshooMonitoring = Project("agent-kenshoo-monitoring", file("."))
-    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+    .settings(majorVersion := 3)
     .settings(scalaSettings ++ scoverageSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(
