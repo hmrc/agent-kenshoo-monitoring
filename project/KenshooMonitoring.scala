@@ -59,6 +59,8 @@ object KenshooMonitoringBuild extends Build {
     )
     .settings(publishAllArtefacts : _*)
     .settings(makePublicallyAvailableOnBintray := true)
-    .settings(resolvers += Resolver.bintrayRepo("hmrc", "releases"))
+    .settings(resolvers ++= Seq(
+      Resolver.bintrayRepo("hmrc", "releases"),
+      Resolver.jcenterRepo))
     .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
 }
