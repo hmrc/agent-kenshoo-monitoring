@@ -58,6 +58,7 @@ object KenshooMonitoringBuild extends Build {
       crossScalaVersions := Seq("2.11.8")
     )
     .settings(publishAllArtefacts : _*)
+    .settings(makePublicallyAvailableOnBintray := true)
     .settings(resolvers += Resolver.bintrayRepo("hmrc", "releases"))
     .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
 }
