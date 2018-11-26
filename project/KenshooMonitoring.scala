@@ -27,12 +27,12 @@ object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 
   val appDependencies = Seq(
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "1.5.0",
+    "uk.gov.hmrc" %% "bootstrap-play-25" % "3.15.0",
     "de.threedimensions" %% "metrics-play" % "2.5.13",
 
     "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-    "org.mockito" % "mockito-core" % "2.18.3" % "test",
-    "uk.gov.hmrc" %% "hmrctest" % "3.0.0" % "test"
+    "org.mockito" % "mockito-core" % "2.23.4" % "test",
+    "uk.gov.hmrc" %% "hmrctest" % "3.2.0" % "test"
   )
 
   lazy val scoverageSettings = {
