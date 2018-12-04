@@ -17,22 +17,20 @@ import sbt.Keys._
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.PublishingSettings._
-import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object KenshooMonitoringBuild extends Build {
-  import uk.gov.hmrc.SbtAutoBuildPlugin
-  import uk.gov.hmrc.SbtArtifactory
+  import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
+  import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
   import uk.gov.hmrc.versioning.SbtGitVersioning
   import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
-  import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 
   val appDependencies = Seq(
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "3.15.0",
+    "uk.gov.hmrc" %% "bootstrap-play-25" % "4.1.0",
     "de.threedimensions" %% "metrics-play" % "2.5.13",
 
     "org.scalatest" %% "scalatest" % "3.0.5" % "test",
     "org.mockito" % "mockito-core" % "2.23.4" % "test",
-    "uk.gov.hmrc" %% "hmrctest" % "3.2.0" % "test"
+    "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % "test"
   )
 
   lazy val scoverageSettings = {
