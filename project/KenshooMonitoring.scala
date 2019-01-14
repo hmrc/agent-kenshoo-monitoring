@@ -25,7 +25,7 @@ object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
   val appDependencies = Seq(
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "4.2.0",
+    "uk.gov.hmrc" %% "bootstrap-play-25" % "4.6.0",
     "de.threedimensions" %% "metrics-play" % "2.5.13",
 
     "org.scalatest" %% "scalatest" % "3.0.5" % "test",
