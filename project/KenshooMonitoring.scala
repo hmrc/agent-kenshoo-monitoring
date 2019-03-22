@@ -17,10 +17,14 @@ import sbt.Keys._
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.PublishingSettings._
-import uk.gov.hmrc.versioning.SbtGitVersioning
 
 object KenshooMonitoringBuild extends Build {
-  import uk.gov.hmrc.SbtAutoBuildPlugin
+  
+  import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
+  import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
+  import uk.gov.hmrc.versioning.SbtGitVersioning
+  import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
+  
   val appDependencies = Seq(
     Dependencies.Compile.kenshoo,
     Dependencies.Compile.microserviceBootstrap,
@@ -44,17 +48,21 @@ object KenshooMonitoringBuild extends Build {
   }
 
   lazy val kenshooMonitoring = Project("agent-kenshoo-monitoring", file("."))
-    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning)
+    .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
+    .settings(majorVersion := 2)
     .settings(scalaSettings ++ scoverageSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
-      scalaVersion := "2.11.11",
+      scalaVersion := "2.11.12",
       libraryDependencies ++= appDependencies,
-      crossScalaVersions := Seq("2.11.8")
+      crossScalaVersions := Seq("2.11.12")
     )
     .settings(publishAllArtefacts : _*)
-    .settings(resolvers += Resolver.bintrayRepo("hmrc", "releases"))
+    .settings(makePublicallyAvailableOnBintray := true)
+    .settings(resolvers ++= Seq(
+      Resolver.bintrayRepo("hmrc", "releases"),
+      Resolver.jcenterRepo))
     .disablePlugins(sbt.plugins.JUnitXmlReportPlugin)
 }
 
@@ -62,15 +70,15 @@ object Dependencies {
 
   object Compile {
     val kenshoo = "de.threedimensions" %% "metrics-play" % "2.5.13"
-    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "6.18.0"
-    val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.1.0"
+    val microserviceBootstrap = "uk.gov.hmrc" %% "microservice-bootstrap" % "10.5.0"
+    val hmrcHttpException = "uk.gov.hmrc" %% "http-exceptions" % "1.2.0"
   }
 
   object Test {
-    val scalaTest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
-    val restAssured = "com.jayway.restassured" % "rest-assured" % "2.6.0" % "test"
-    val mockito = "org.mockito" % "mockito-core" % "1.9.5" % "test"
-    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "2.4.0" % "test"
+    val scalaTest = "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+    val restAssured = "com.jayway.restassured" % "rest-assured" % "2.9.0" % "test"
+    val mockito = "org.mockito" % "mockito-core" % "1.10.19" % "test"
+    val hmrcTest = "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % "test"
   }
 
 }
