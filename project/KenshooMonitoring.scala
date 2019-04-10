@@ -28,15 +28,6 @@ object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.versioning.SbtGitVersioning
   import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
-  val appDependencies = Seq(
-    "uk.gov.hmrc" %% "bootstrap-play-25" % "4.9.0",
-    "de.threedimensions" %% "metrics-play" % "2.5.13",
-
-    "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-    "org.mockito" % "mockito-core" % "2.23.4" % "test",
-    "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % "test"
-  )
-
   lazy val scoverageSettings = {
     import scoverage.ScoverageKeys
     Seq(
@@ -58,16 +49,18 @@ object KenshooMonitoringBuild extends Build {
       targetJvm := "jvm-1.8",
       libraryDependencies ++= PlayCrossCompilation.dependencies(
         shared = Seq(
-          "de.threedimensions" %% "metrics-play" % "2.5.13",
           "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-          "org.mockito" % "mockito-core" % "2.23.4" % "test",
-          "uk.gov.hmrc" %% "hmrctest" % "3.3.0" % "test"
+          "org.mockito" % "mockito-core" % "2.23.4" % "test"
         ),
         play25 = Seq(
-          "uk.gov.hmrc" %% "bootstrap-play-25" % "4.9.0"
+          "com.kenshoo" %% "metrics-play" % "2.5.9_0.5.1",
+          "uk.gov.hmrc" %% "bootstrap-play-25" % "4.9.0",
+          "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-25" % "test"
         ),
         play26 = Seq(
-          "uk.gov.hmrc" %% "bootstrap-play-26" % "0.37.0"
+          "com.kenshoo" %% "metrics-play" % "2.6.19_0.7.0",
+          "uk.gov.hmrc" %% "bootstrap-play-26" % "0.37.0",
+          "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-26" % "test"
         )
       ),
       crossScalaVersions := Seq("2.11.12")
