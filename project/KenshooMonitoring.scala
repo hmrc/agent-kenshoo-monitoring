@@ -17,10 +17,6 @@ import sbt.Keys._
 import sbt._
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.PublishingSettings._
-import uk.gov.hmrc.playcrosscompilation.AbstractPlayCrossCompilation
-import uk.gov.hmrc.playcrosscompilation.PlayVersion.Play25
-
-object PlayCrossCompilation extends AbstractPlayCrossCompilation(defaultPlayVersion = Play25)
 
 object KenshooMonitoringBuild extends Build {
   import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
@@ -42,29 +38,19 @@ object KenshooMonitoringBuild extends Build {
 
   lazy val kenshooMonitoring = Project("agent-kenshoo-monitoring", file("."))
     .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
-    .settings(majorVersion := 3)
+    .settings(majorVersion := 4)
     .settings(scalaSettings ++ scoverageSettings: _*)
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
-      libraryDependencies ++= PlayCrossCompilation.dependencies(
-        shared = Seq(
+      scalaVersion := "2.12.8",
+      libraryDependencies ++= Seq(
           "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-          "org.mockito" % "mockito-core" % "2.23.4" % "test"
-        ),
-        play25 = Seq(
-          "com.kenshoo" %% "metrics-play" % "2.5.9_0.5.1",
-          "uk.gov.hmrc" %% "bootstrap-play-25" % "4.9.0",
-          "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-25" % "test"
-        ),
-        play26 = Seq(
+          "org.mockito" % "mockito-core" % "2.23.4" % "test",
           "com.kenshoo" %% "metrics-play" % "2.6.19_0.7.0",
           "uk.gov.hmrc" %% "bootstrap-play-26" % "0.37.0",
-          "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-26" % "test"
-        )
-      ),
-      crossScalaVersions := Seq("2.11.12")
-    )
+          "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-26" % "test")
+      )
     .settings(publishAllArtefacts : _*)
     .settings(makePublicallyAvailableOnBintray := true)
     .settings(resolvers ++= Seq(
