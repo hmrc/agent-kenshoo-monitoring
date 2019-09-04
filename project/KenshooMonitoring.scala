@@ -43,7 +43,7 @@ object KenshooMonitoringBuild extends Build {
     .settings(defaultSettings(): _*)
     .settings(
       targetJvm := "jvm-1.8",
-      scalaVersion := "2.12.8",
+      scalaVersion := "2.11.11",
       libraryDependencies ++= Seq(
           "org.scalatest" %% "scalatest" % "3.0.5" % "test",
           "org.mockito" % "mockito-core" % "2.23.4" % "test",
