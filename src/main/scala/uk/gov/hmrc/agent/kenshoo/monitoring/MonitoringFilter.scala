@@ -19,12 +19,11 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 import play.api.Logger
 import play.api.mvc.{Filter, RequestHeader, Result}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.play.HeaderCarrierConverter.fromHeadersAndSession
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
 import com.codahale.metrics.MetricRegistry
 
-abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], override val kenshooRegistry: MetricRegistry) extends Filter with HttpAPIMonitor {
+abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], override val kenshooRegistry: MetricRegistry)(implicit ec: ExecutionContext) extends Filter with HttpAPIMonitor {
 
   def apiName(uri: String, method: String): Option[String] = {
     urlPatternToNameMapping.find { keyValue => uri.matches(keyValue._1) } map { keyValue => s"API-${keyValue._2}-$method" }

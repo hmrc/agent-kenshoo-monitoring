@@ -47,6 +47,7 @@ object KenshooMonitoringBuild extends Build {
       libraryDependencies ++= Seq(
           "org.scalatest" %% "scalatest" % "3.0.5" % "test",
           "org.mockito" % "mockito-core" % "2.23.4" % "test",
+        "org.scalamock" %% "scalamock" % "4.4.0" % Test,
           "com.kenshoo" %% "metrics-play" % "2.6.19_0.7.0",
           "uk.gov.hmrc" %% "bootstrap-play-26" % "0.37.0",
           "uk.gov.hmrc" %% "hmrctest" % "3.6.0-play-26" % "test")
