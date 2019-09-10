@@ -19,12 +19,14 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 import play.api.Logger
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
-import uk.gov.hmrc.play.http.ws.WSHttp
+import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait MonitoredWSHttp extends WSHttp with HttpAPIMonitor {
+trait MonitoredHttpClient extends HttpAPIMonitor {
+
+  val http: HttpClient
+  implicit val ec: ExecutionContext
 
   private case class HttpAPI(urlPattern: String, name: String)
 
@@ -42,53 +44,60 @@ trait MonitoredWSHttp extends WSHttp with HttpAPIMonitor {
   val httpAPIs: Map[String, String]
   private lazy val apiNames = HttpAPINames(httpAPIs)
 
-  def monitorRequestsWithoutBodyIfUrlPatternIsKnown(method: String, url: String)(func: => Future[HttpResponse])(implicit hc: HeaderCarrier) = {
+  private def monitorUrl(method: String, url: String)(func: => Future[HttpResponse])(implicit hc: HeaderCarrier) = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
         func
-      case Some(name) =>
-        monitor(name) { func }
+      case Some(name) => {
+        monitor(name) {
+          func
+        }
+      }
     }
   }
 
-  def monitorRequestsWithBodyIfUrlPatternIsKnown[A](method: String, url: String)(func: => Future[HttpResponse])(implicit rds: Writes[A], hc: HeaderCarrier) = {
+  private def monitorUrlWithBody[A](method: String, url: String)(func: => Future[HttpResponse])(implicit rds: Writes[A], hc: HeaderCarrier) = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
         func
-      case Some(name) =>
-        monitor(name) { func }
+      case Some(name) => {
+        monitor(name) {
+          func
+        }
+      }
     }
   }
 
-  override def doGet(url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithoutBodyIfUrlPatternIsKnown("GET", url) {
-      super.doGet(url)
+
+ def doGet( url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
+   monitorUrl("GET", url) {
+     http.GET(url)
+   }
+ }
+
+  def doPost[A](url: String, body: A, headers: Seq[(String, String)])(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
+    monitorUrlWithBody("POST", url) {
+      http.POST(url, body, headers)
     }
   }
 
-  override def doPost[A](url: String, body: A, headers: Seq[(String, String)])(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithBodyIfUrlPatternIsKnown("POST", url) {
-      super.doPost(url, body, headers)
+  def doEmptyPost[A](url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
+    monitorUrl("POST", url) {
+      http.POSTEmpty(url)
     }
   }
 
-  override def doEmptyPost[A](url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithoutBodyIfUrlPatternIsKnown("POST", url) {
-      super.doEmptyPost(url)
+  def doPut[A](url: String, body: A)(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
+    monitorUrlWithBody("PUT", url) {
+      http.PUT(url, body)
     }
   }
 
-  override def doPut[A](url: String, body: A)(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithBodyIfUrlPatternIsKnown("PUT", url) {
-      super.doPut(url, body)
-    }
-  }
-
-  override def doDelete(url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithoutBodyIfUrlPatternIsKnown("DELETE", url) {
-      super.doDelete(url)
+  def doDelete(url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
+    monitorUrl("DELETE", url) {
+      http.DELETE(url)
     }
   }
 }

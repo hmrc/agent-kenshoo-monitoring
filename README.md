@@ -7,9 +7,7 @@ White-listing of URLs is possible for both.
 
 ## Note
 
-This library is currently intended for use by the Agent Services team.
-It has a direct dependency on http-verbs which makes the upgrade path to Play 2.6 or later more difficult.
-Until this is resolved we and PlatOps recommend that other teams avoid adding new dependencies on agent-kenshoo-monitoring.
+This library is currently intended for use by the Agent Services team. Since v4.3.0 and to support services using Play 2.6, the library no longer has a dependency on HttpVerbs. You will need an instance of HttpClient and an implicit ExecutionContext defined in scope.
 
 ### License
 
