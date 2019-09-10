@@ -37,9 +37,10 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
   val http = mock[HttpClient]
   val httpAPIs = Map("/test/endpoint" -> "testEndpoint")
   val testEndpointTimer = mock[Timer]
-  val newTimer = mock[Timer]
 
   val kenshooRegistry = mock[MetricRegistry]
+
+  implicit val hc = HeaderCarrier()
 
   override def beforeEach(): Unit = {
 
@@ -48,115 +49,106 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
     Mockito.reset(testEndpointTimer)
   }
 
-
   def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
     override def matches(argument: lang.Long): Boolean = argument >= l
   }
 
-  implicit val hc = HeaderCarrier()
+  private val monitoredHttpClient = new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs)
 
   "doGet" should {
 
-    "time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs){
+    "time the request if the url is whitelisted" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-GET")).willReturn(testEndpointTimer)
 
       given(http.GET[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doGet("/test/endpoint"))
-
-      println(s"metric registry ${kenshooRegistry.getMetrics}")
+      await(monitoredHttpClient.doGet("/test/endpoint"))
 
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
       verify(kenshooRegistry, times(1)).getTimers()
     }
 
-
     "not time the request if the url is not whitelisted" in {
-      new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
 
         given(http.GET[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200)))
 
-        await(doGet("/test/notmonitored"))
+        await(monitoredHttpClient.doGet("/test/notmonitored"))
         verify(kenshooRegistry, never()).getTimers()
-      }
     }
   }
 
-
   "doPost" should {
 
-    "time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs){
+    "time the request if the url is whitelisted" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-POST")).willReturn(testEndpointTimer)
       given(http.POST[String, HttpResponse]("/test/endpoint","something",Seq.empty)).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doPost("/test/endpoint","something", Seq.empty))
+      await(monitoredHttpClient.doPost("/test/endpoint","something", Seq.empty))
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "not time the request if the url is whitelisted" in {
 
         given(http.POST[String, HttpResponse]("/test/notmonitored","something",Seq.empty)).willReturn(Future.successful(HttpResponse(200)))
 
-        await(doPost("/test/notmonitored", "something", Seq.empty))
+        await(monitoredHttpClient.doPost("/test/notmonitored", "something", Seq.empty))
         verify(kenshooRegistry, never()).getTimers()
-
     }
   }
 
   "doPostEmpty" should {
 
-    "time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "time the request if the url is whitelisted" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-POST")).willReturn(testEndpointTimer)
       given(http.POSTEmpty[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doEmptyPost("/test/endpoint"))
+      await(monitoredHttpClient.doEmptyPost("/test/endpoint"))
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
-
     }
 
-    "not time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "not time the request if the url is whitelisted" in  {
 
         given(http.POSTEmpty[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200)))
 
-        await(doEmptyPost("/test/notmonitored"))
+        await(monitoredHttpClient.doEmptyPost("/test/notmonitored"))
         verify(kenshooRegistry, never()).getTimers()
       }
   }
 
   "doPut" should {
-    "time the request if the request is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "time the request if the request is whitelisted" in {
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-PUT")).willReturn(testEndpointTimer)
       given(http.PUT[String, HttpResponse]("/test/endpoint","something")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doPut("/test/endpoint","something"))
+      await(monitoredHttpClient.doPut("/test/endpoint","something"))
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "not time the request if the url is whitelisted" in {
 
       given(http.PUT[String, HttpResponse]("/test/notmonitored","something")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doPut("/test/notmonitored", "something"))
+      await(monitoredHttpClient.doPut("/test/notmonitored", "something"))
       verify(kenshooRegistry, never()).getTimers()
     }
   }
 
   "doDelete" should {
-    "time the request if the request is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "time the request if the request is whitelisted" in {
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-DELETE")).willReturn(testEndpointTimer)
       given(http.DELETE[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doDelete("/test/endpoint"))
+      await(monitoredHttpClient.doDelete("/test/endpoint"))
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(1L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs) {
+    "not time the request if the url is whitelisted" in {
       given(http.DELETE[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200)))
 
-      await(doDelete("/test/notmonitored"))
+      await(monitoredHttpClient.doDelete("/test/notmonitored"))
       verify(kenshooRegistry, never()).getTimers()
     }
   }

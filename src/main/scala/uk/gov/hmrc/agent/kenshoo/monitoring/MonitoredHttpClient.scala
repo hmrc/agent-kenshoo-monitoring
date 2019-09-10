@@ -44,7 +44,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   val httpAPIs: Map[String, String]
   private lazy val apiNames = HttpAPINames(httpAPIs)
 
-  private def monitorRequestsWithoutBodyIfUrlPatternIsKnown(method: String, url: String)(func: => Future[HttpResponse])(implicit hc: HeaderCarrier) = {
+  private def monitorUrl(method: String, url: String)(func: => Future[HttpResponse])(implicit hc: HeaderCarrier) = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
@@ -57,7 +57,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
     }
   }
 
-  private def monitorRequestsWithBodyIfUrlPatternIsKnown[A](method: String, url: String)(func: => Future[HttpResponse])(implicit rds: Writes[A], hc: HeaderCarrier) = {
+  private def monitorUrlWithBody[A](method: String, url: String)(func: => Future[HttpResponse])(implicit rds: Writes[A], hc: HeaderCarrier) = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
@@ -72,31 +72,31 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
 
 
  def doGet( url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-   monitorRequestsWithoutBodyIfUrlPatternIsKnown("GET", url) {
+   monitorUrl("GET", url) {
      http.GET(url)
    }
  }
 
   def doPost[A](url: String, body: A, headers: Seq[(String, String)])(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithBodyIfUrlPatternIsKnown("POST", url) {
+    monitorUrlWithBody("POST", url) {
       http.POST(url, body, headers)
     }
   }
 
   def doEmptyPost[A](url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithoutBodyIfUrlPatternIsKnown("POST", url) {
+    monitorUrl("POST", url) {
       http.POSTEmpty(url)
     }
   }
 
   def doPut[A](url: String, body: A)(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithBodyIfUrlPatternIsKnown("PUT", url) {
+    monitorUrlWithBody("PUT", url) {
       http.PUT(url, body)
     }
   }
 
   def doDelete(url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
-    monitorRequestsWithoutBodyIfUrlPatternIsKnown("DELETE", url) {
+    monitorUrl("DELETE", url) {
       http.DELETE(url)
     }
   }
