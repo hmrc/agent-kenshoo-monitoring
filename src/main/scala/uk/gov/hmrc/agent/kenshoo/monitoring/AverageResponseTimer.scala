@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,11 @@ import play.api.Logger
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
 import com.codahale.metrics.MetricRegistry
-import uk.gov.hmrc.http.HeaderCarrier
 
 trait AverageResponseTimer {
   val kenshooRegistry: MetricRegistry
 
-  def timer[T](serviceName: String)(function: => Future[T])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[T] = {
+  def timer[T](serviceName: String)(function: => Future[T])(implicit ec: ExecutionContext): Future[T] = {
     val start = System.nanoTime()
     function.andThen {
       case _ =>

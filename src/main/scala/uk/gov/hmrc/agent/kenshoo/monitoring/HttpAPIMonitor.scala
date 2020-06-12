@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,10 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring
 
-import uk.gov.hmrc.http.HeaderCarrier
-
 import scala.concurrent.{ExecutionContext, Future}
 
 trait HttpAPIMonitor extends AverageResponseTimer with HttpErrorRateMeter {
-  def monitor[T](serviceName: String)(function: => Future[T])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[T] = {
+  def monitor[T](serviceName: String)(function: => Future[T])(implicit ec: ExecutionContext): Future[T] = {
     super.countErrors(serviceName) {
       super.timer(serviceName) {
         function

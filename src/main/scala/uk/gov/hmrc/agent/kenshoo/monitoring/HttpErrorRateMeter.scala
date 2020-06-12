@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ trait HttpErrorRateMeter {
     if (statusCode >= 500) s"Http5xxErrorCount-$serviceName" else s"Http4xxErrorCount-$serviceName"
   }
 
-  def countErrors[T](serviceName: String)(future: Future[T])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[T] = {
+  def countErrors[T](serviceName: String)(future: Future[T])(implicit ec: ExecutionContext): Future[T] = {
     future.andThen {
       case Success(response: HttpResponse) if response.status >=400 => record(meterName(serviceName, response.status))
       case Failure(exception: Upstream5xxResponse) => record(meterName(serviceName, exception.upstreamResponseCode))
