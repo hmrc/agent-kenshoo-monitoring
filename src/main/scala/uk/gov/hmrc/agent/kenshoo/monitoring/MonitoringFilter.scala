@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import play.api.Logger
 import play.api.mvc.{Filter, RequestHeader, Result}
 
 import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.play.HeaderCarrierConverter.fromHeadersAndSession
 import com.codahale.metrics.MetricRegistry
 
 abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], override val kenshooRegistry: MetricRegistry)(implicit ec: ExecutionContext) extends Filter with HttpAPIMonitor {
@@ -29,8 +28,7 @@ abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], ov
     urlPatternToNameMapping.find { keyValue => uri.matches(keyValue._1) } map { keyValue => s"API-${keyValue._2}-$method" }
   }
 
-  override def apply(nextFilter: (RequestHeader) => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
-    implicit val hc = fromHeadersAndSession(requestHeader.headers)
+  override def apply(nextFilter: RequestHeader => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
 
     apiName(requestHeader.uri, requestHeader.method) match {
       case None =>

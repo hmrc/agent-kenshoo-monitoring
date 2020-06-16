@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2020 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   private case class HttpAPINames(urlPatternAndName: Map[String, String]) {
     val httpAPIs = urlPatternAndName.map { httpApi => HttpAPI(httpApi._1, httpApi._2) }
 
-    def nameFor(method: String, url: String) = {
+    def nameFor(method: String, url: String): Option[String] = {
       httpAPIs.find(downstreamService => url.matches(downstreamService.urlPattern)) match {
         case Some(service) => Some(s"ConsumedAPI-${service.name}-$method")
         case None => None
@@ -44,7 +44,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   val httpAPIs: Map[String, String]
   private lazy val apiNames = HttpAPINames(httpAPIs)
 
-  private def monitorUrl(method: String, url: String)(func: => Future[HttpResponse])(implicit hc: HeaderCarrier) = {
+  private def monitorUrl(method: String, url: String)(func: => Future[HttpResponse]): Future[HttpResponse] = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
@@ -57,7 +57,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
     }
   }
 
-  private def monitorUrlWithBody[A](method: String, url: String)(func: => Future[HttpResponse])(implicit rds: Writes[A], hc: HeaderCarrier) = {
+  private def monitorUrlWithBody[A](method: String, url: String)(func: => Future[HttpResponse]): Future[HttpResponse] = {
     apiNames.nameFor(method, url) match {
       case None =>
         Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
