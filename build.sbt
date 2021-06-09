@@ -1,6 +1,5 @@
 
 import sbt.Resolver
-import uk.gov.hmrc.SbtArtifactory.autoImport.makePublicallyAvailableOnBintray
 import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
 import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
@@ -10,7 +9,7 @@ lazy val scoverageSettings = {
   Seq(
     // Semicolon-separated list of regexs matching classes to exclude
     ScoverageKeys.coverageExcludedPackages := """uk\.gov\.hmrc\.BuildInfo;.*\.Routes;.*\.RoutesPrefix;.*\.Reverse[^.]*""",
-    ScoverageKeys.coverageMinimum := 80.00,
+    ScoverageKeys.coverageMinimum := 75.00,
     ScoverageKeys.coverageFailOnMinimum := false,
     ScoverageKeys.coverageHighlighting := true,
     parallelExecution in Test := false
@@ -59,6 +58,7 @@ lazy val root = (project in file("."))
     resolvers ++= Seq(
       Resolver.typesafeRepo("releases"),
     ),
-    libraryDependencies ++= allDependencies
+    libraryDependencies ++= allDependencies,
+    makePublicallyAvailableOnBintray := true
   )
   .settings(PlayCrossCompilation.playCrossCompilationSettings)
