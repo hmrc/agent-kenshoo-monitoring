@@ -7,7 +7,7 @@ White-listing of URLs is possible for both.
 
 ## Note
 
-This library is currently intended for use by the Agent Services team. Since v4.3.0 and to support services using Play 2.6, the library no longer has a dependency on HttpVerbs. You will need an instance of HttpClient and an implicit ExecutionContext defined in scope.
+This library is currently intended for use by the Agent Services team. Since v4.5.0 and to support services using Play 2.6, Play 2.7 and Play 2.8 the library no longer has a dependency on HttpVerbs. You will need an instance of HttpClient and an implicit ExecutionContext defined in scope.
 
 ### License
 
