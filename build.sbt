@@ -24,20 +24,20 @@ val allDependencies = PlayCrossCompilation.dependencies(
   ),
   play26 = Seq(
     "com.typesafe.play" %% "play-json" % "2.6.13",
-    "uk.gov.hmrc" %% "domain" % "5.10.0-play-26",
+    "uk.gov.hmrc" %% "domain" % "6.0.0-play-26",
     "com.kenshoo"       %% "metrics-play"         % "2.6.19_0.7.0",
-    "uk.gov.hmrc"       %% "bootstrap-play-26"    % "1.8.0"
+    "uk.gov.hmrc"       %% "bootstrap-backend-play-26"    % "5.4.0"
 
   ),
   play27 = Seq(
     "com.typesafe.play" %% "play-json" % "2.7.4",
-    "uk.gov.hmrc" %% "domain" % "5.10.0-play-27",
+    "uk.gov.hmrc" %% "domain" % "6.0.0-play-27",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
     "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.4.0"
   ),
   play28 = Seq(
     "com.typesafe.play"      %% "play-json"          % "2.8.1",
-    "uk.gov.hmrc" %% "domain" % "5.10.0-play-28",
+    "uk.gov.hmrc" %% "domain" % "6.0.0-play-28",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
     "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.4.0"
   )
