@@ -32,7 +32,7 @@ abstract class MonitoringFilter(urlPatternToNameMapping: Map[String, String], ov
 
     apiName(requestHeader.uri, requestHeader.method) match {
       case None =>
-        Logger.debug(s"API-Not-Monitored: ${requestHeader.method}-${requestHeader.uri}")
+        Logger(this.getClass).debug(s"API-Not-Monitored: ${requestHeader.method}-${requestHeader.uri}")
         nextFilter(requestHeader)
       case Some(name) =>
         monitor(name) {
