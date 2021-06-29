@@ -18,8 +18,8 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import play.api.Logger
 import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.HttpReads.Implicits._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -47,7 +47,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   private def monitorUrl(method: String, url: String)(func: => Future[HttpResponse]): Future[HttpResponse] = {
     apiNames.nameFor(method, url) match {
       case None =>
-        Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
+        Logger(this.getClass).debug(s"ConsumedAPI-Not-Monitored: $method-$url")
         func
       case Some(name) => {
         monitor(name) {
@@ -60,7 +60,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   private def monitorUrlWithBody[A](method: String, url: String)(func: => Future[HttpResponse]): Future[HttpResponse] = {
     apiNames.nameFor(method, url) match {
       case None =>
-        Logger.debug(s"ConsumedAPI-Not-Monitored: $method-$url")
+        Logger(this.getClass).debug(s"ConsumedAPI-Not-Monitored: $method-$url")
         func
       case Some(name) => {
         monitor(name) {
@@ -73,13 +73,13 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
 
  def doGet( url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
    monitorUrl("GET", url) {
-     http.GET(url)
+     http.GET[HttpResponse](url)
    }
  }
 
   def doPost[A](url: String, body: A, headers: Seq[(String, String)])(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
     monitorUrlWithBody("POST", url) {
-      http.POST(url, body, headers)
+      http.POST[A,HttpResponse](url, body, headers)
     }
   }
 
@@ -91,13 +91,13 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
 
   def doPut[A](url: String, body: A)(implicit rds: Writes[A], hc: HeaderCarrier): Future[HttpResponse] = {
     monitorUrlWithBody("PUT", url) {
-      http.PUT(url, body)
+      http.PUT[A,HttpResponse](url, body)
     }
   }
 
   def doDelete(url: String)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
     monitorUrl("DELETE", url) {
-      http.DELETE(url)
+      http.DELETE[HttpResponse](url)
     }
   }
 }

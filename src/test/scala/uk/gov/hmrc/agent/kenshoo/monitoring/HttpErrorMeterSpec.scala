@@ -35,7 +35,7 @@ class HttpErrorMeterSpec extends UnitSpec {
     "not be counted" in new HttpErrorRateMeterTest {
       List(200, 201, 204).foreach { status =>
         await(countErrors("servicename") {
-          Future.successful(HttpResponse(status))
+          Future.successful(HttpResponse(status, ""))
         })
         verify(kenshooRegistry, never()).getTimers
       }
@@ -46,7 +46,7 @@ class HttpErrorMeterSpec extends UnitSpec {
     "not be counted" in new HttpErrorRateMeterTest {
       List(301, 302, 303).foreach { status =>
         await(countErrors("servicename") {
-          Future.successful(HttpResponse(status))
+          Future.successful(HttpResponse(status, ""))
         })
         verify(kenshooRegistry, never()).getTimers
       }
@@ -57,7 +57,7 @@ class HttpErrorMeterSpec extends UnitSpec {
     "be counted" in new HttpErrorRateMeterTest {
       List(400, 401, 404).foreach { status =>
         await(countErrors("servicename") {
-          Future.successful(HttpResponse(status))
+          Future.successful(HttpResponse(status, ""))
         })
       }
       verify(errorMeter4xx, Mockito.times(3)).mark()
@@ -69,7 +69,7 @@ class HttpErrorMeterSpec extends UnitSpec {
       List(400, 401, 404).foreach { status =>
         try {
           await(countErrors("servicename") {
-            Future.failed(Upstream4xxResponse("foobar", status, status))
+            Future.failed(UpstreamErrorResponse("foobar", status, status))
           })
         } catch {
           case ex: Throwable => ()
@@ -83,7 +83,7 @@ class HttpErrorMeterSpec extends UnitSpec {
     "be counted" in new HttpErrorRateMeterTest {
       List(500, 503).foreach { status =>
         await(countErrors("servicename") {
-          Future.successful(HttpResponse(status))
+          Future.successful(HttpResponse(status, ""))
         })
       }
       verify(errorMeter5xx, Mockito.times(2)).mark()
@@ -95,7 +95,7 @@ class HttpErrorMeterSpec extends UnitSpec {
       List(500, 503).foreach { status =>
         try {
           await(countErrors("servicename") {
-            Future.failed(Upstream5xxResponse("foobar", status, status))
+            Future.failed(UpstreamErrorResponse("foobar", status, status))
           })
         } catch {
           case ex: Throwable => ()

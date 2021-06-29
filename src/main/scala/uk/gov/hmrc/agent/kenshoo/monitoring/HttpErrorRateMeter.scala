@@ -41,6 +41,6 @@ trait HttpErrorRateMeter {
 
   private def record[T](name: String): Unit = {
     kenshooRegistry.getMeters.getOrDefault(name, kenshooRegistry.meter(name)).mark()
-    Logger.debug(s"kenshoo-event::meter::$name::recorded")
+    Logger(this.getClass).debug(s"kenshoo-event::meter::$name::recorded")
   }
 }

@@ -1,7 +1,5 @@
 
 import sbt.Resolver
-import uk.gov.hmrc.{SbtArtifactory, SbtAutoBuildPlugin}
-import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val scoverageSettings = {
@@ -35,30 +33,28 @@ val allDependencies = PlayCrossCompilation.dependencies(
     "com.typesafe.play" %% "play-json" % "2.7.4",
     "uk.gov.hmrc" %% "domain" % "5.10.0-play-27",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "4.3.0"
+    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.4.0"
   ),
   play28 = Seq(
     "com.typesafe.play"      %% "play-json"          % "2.8.1",
     "uk.gov.hmrc" %% "domain" % "5.10.0-play-28",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "4.3.0"
+    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.4.0"
   )
 )
 
 lazy val root = (project in file("."))
-  .enablePlugins(SbtAutoBuildPlugin, SbtGitVersioning, SbtArtifactory)
   .settings(
     name := "agent-kenshoo-monitoring",
     organization := "uk.gov.hmrc",
     scalaVersion := "2.12.12",
     crossScalaVersions := List("2.12.12"),
     majorVersion := 4,
-    makePublicallyAvailableOnBintray := true,
+    isPublicArtefact := true,
     scoverageSettings,
     resolvers ++= Seq(
       Resolver.typesafeRepo("releases"),
     ),
     libraryDependencies ++= allDependencies,
-    makePublicallyAvailableOnBintray := true
   )
   .settings(PlayCrossCompilation.playCrossCompilationSettings)
