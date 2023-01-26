@@ -33,13 +33,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
-  val http = mock[HttpClient]
+  val http: HttpClient = mock[HttpClient]
   val httpAPIs = Map("/test/endpoint" -> "testEndpoint")
-  val testEndpointTimer = mock[Timer]
+  val testEndpointTimer: Timer = mock[Timer]
 
-  val kenshooRegistry = mock[MetricRegistry]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   override def beforeEach(): Unit = {
 
@@ -56,7 +56,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
 
   "doGet" should {
 
-    "time the request if the url is whitelisted" in {
+    "time the request if the url is allow-listed" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-GET")).willReturn(testEndpointTimer)
 
@@ -68,7 +68,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
       verify(kenshooRegistry, times(1)).getTimers()
     }
 
-    "not time the request if the url is not whitelisted" in {
+    "not time the request if the url is not allow-listed" in {
 
         given(http.GET[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -79,7 +79,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
 
   "doPost" should {
 
-    "time the request if the url is whitelisted" in {
+    "time the request if the url is allow-listed" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-POST")).willReturn(testEndpointTimer)
       given(http.POST[String, HttpResponse]("/test/endpoint","something",Seq.empty)).willReturn(Future.successful(HttpResponse(200, "")))
@@ -88,7 +88,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in {
+    "not time the request if the url is allow-listed" in {
 
         given(http.POST[String, HttpResponse]("/test/notmonitored","something",Seq.empty)).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -99,7 +99,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
 
   "doPostEmpty" should {
 
-    "time the request if the url is whitelisted" in {
+    "time the request if the url is allow-listed" in {
 
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-POST")).willReturn(testEndpointTimer)
       given(http.POSTEmpty[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200, "")))
@@ -108,7 +108,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in  {
+    "not time the request if the url is allow-listed" in  {
 
         given(http.POSTEmpty[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -118,7 +118,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
   }
 
   "doPut" should {
-    "time the request if the request is whitelisted" in {
+    "time the request if the request is allow-listed" in {
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-PUT")).willReturn(testEndpointTimer)
       given(http.PUT[String, HttpResponse]("/test/endpoint","something")).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -126,7 +126,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in {
+    "not time the request if the url is allow-listed" in {
 
       given(http.PUT[String, HttpResponse]("/test/notmonitored","something")).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -136,7 +136,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
   }
 
   "doDelete" should {
-    "time the request if the request is whitelisted" in {
+    "time the request if the request is allow-listed" in {
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-DELETE")).willReturn(testEndpointTimer)
       given(http.DELETE[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200, "")))
 
@@ -144,7 +144,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(1L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
-    "not time the request if the url is whitelisted" in {
+    "not time the request if the url is allow-listed" in {
       given(http.DELETE[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200, "")))
 
       await(monitoredHttpClient.doDelete("/test/notmonitored"))
