@@ -10,7 +10,7 @@ lazy val scoverageSettings = {
     ScoverageKeys.coverageMinimum := 75.00,
     ScoverageKeys.coverageFailOnMinimum := false,
     ScoverageKeys.coverageHighlighting := true,
-    parallelExecution in Test := false
+    Test / parallelExecution := false
   )
 }
 
@@ -36,20 +36,23 @@ val allDependencies = PlayCrossCompilation.dependencies(
     "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
   ),
   play28 = Seq(
-    "com.typesafe.play"      %% "play-json"          % "2.8.1",
+    "com.typesafe.play"      %% "play-json"          % "2.8.18",
     "uk.gov.hmrc" %% "domain" % "6.0.0-play-28",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
     "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
   )
 )
 
+val scala2_12 = "2.12.12"
+val scala2_13 = "2.13.8"
+
 lazy val root = (project in file("."))
   .settings(
     name := "agent-kenshoo-monitoring",
     organization := "uk.gov.hmrc",
-    scalaVersion := "2.12.12",
-    crossScalaVersions := List("2.12.12"),
-    majorVersion := 4,
+    scalaVersion := scala2_12,
+    crossScalaVersions := List(scala2_12, scala2_13),
+    majorVersion := 5,
     isPublicArtefact := true,
     scoverageSettings,
     resolvers ++= Seq(
