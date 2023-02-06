@@ -16,7 +16,7 @@ val playPlugin =
   if (sys.env.get("PLAY_VERSION").contains("2.8"))
     "com.typesafe.play" % "sbt-plugin" % "2.8.6"
   else if (sys.env.get("PLAY_VERSION").contains("2.7"))
-    "com.typesafe.play" % "sbt-plugin" % "2.7.7"
+    "com.typesafe.play" % "sbt-plugin" % "2.7.9"
   else
     "com.typesafe.play" % "sbt-plugin" % "2.6.25"
 
