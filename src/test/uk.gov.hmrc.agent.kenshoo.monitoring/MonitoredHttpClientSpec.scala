@@ -25,9 +25,10 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito.{never, times, verify}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
-import uk.gov.hmrc.play.test.UnitSpec
-import  uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
+import uk.gov.hmrc.http.HttpReads.Implicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}

@@ -16,23 +16,17 @@ lazy val scoverageSettings = {
 
 val allDependencies = PlayCrossCompilation.dependencies(
   shared = Seq(
-    "org.scalatest" %% "scalatest" % "3.0.6" % Test,
-    "org.pegdown" % "pegdown" % "1.6.0" % Test,
-    "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
-    "org.mockito"       % "mockito-core"          % "2.28.2"          % "test",
-    "uk.gov.hmrc"       %% "hmrctest"             % "3.10.0-play-26"   % "test"
-  ),
-  play27 = Seq(
-    "com.typesafe.play" %% "play-json" % "2.7.4",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-27",
-    "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
+    "org.scalatest"          %% "scalatest"                 % "3.2.15"   % Test,
+    "org.pegdown"            %  "pegdown"                   % "1.6.0"    % Test,
+    "org.scalacheck"         %% "scalacheck"                % "1.14.0"   % Test,
+    "org.mockito"            %  "mockito-core"              % "2.28.2"   % "test",
+    "org.scalatestplus.play" %% "scalatestplus-play"        % "5.1.0"    % "test",
   ),
   play28 = Seq(
-    "com.typesafe.play"      %% "play-json"          % "2.8.18",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-28",
-    "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
+    "com.typesafe.play"      %% "play-json"                 % "2.9.4",
+    "uk.gov.hmrc"            %% "domain"                    % "8.1.0-play-28",
+    "com.kenshoo"            %% "metrics-play"              % "2.7.3_0.8.2",
+    "uk.gov.hmrc"            %% "bootstrap-backend-play-28" % "7.13.0"
   )
 )
 

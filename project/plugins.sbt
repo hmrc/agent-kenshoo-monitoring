@@ -3,19 +3,11 @@ resolvers += Resolver.url("HMRC-open-artefacts-ivy", url("https://open.artefacts
 
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.9.0")
-
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 
 addSbtPlugin("uk.gov.hmrc" % "sbt-play-cross-compilation" % "2.0.0")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
-
 addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.16")
 
-val playPlugin =
-  if (sys.env.get("PLAY_VERSION").contains("2.8"))
-    "com.typesafe.play" % "sbt-plugin" % "2.8.6"
-  else
-    "com.typesafe.play" % "sbt-plugin" % "2.7.9"
-
-addSbtPlugin(playPlugin)
+addSbtPlugin("com.typesafe.play" % "sbt-plugin"         % "2.8.18")

@@ -26,7 +26,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global

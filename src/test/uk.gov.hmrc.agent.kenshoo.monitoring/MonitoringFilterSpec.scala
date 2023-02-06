@@ -23,15 +23,14 @@ import org.mockito.Mockito.mock
 import org.scalatest.Matchers
 import play.api.http.HttpEntity
 import play.api.mvc.{Headers, RequestHeader, ResponseHeader, Result}
+import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext.fromLoggingDetails
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class MonitoringFilterSpec extends UnitSpec {
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   "monitoring filter" should {
     "monitor known incoming requests" in new MonitoringFilterTestImp {

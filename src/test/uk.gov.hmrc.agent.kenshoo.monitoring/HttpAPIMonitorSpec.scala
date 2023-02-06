@@ -18,7 +18,6 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import java.lang
 import java.util.concurrent.TimeUnit
-
 import com.codahale.metrics.{Meter, Timer}
 import org.mockito.BDDMockito._
 import org.mockito.ArgumentMatchers._
@@ -29,8 +28,9 @@ import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
 import org.mockito.ArgumentMatcher
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpException}
-import uk.gov.hmrc.play.test.UnitSpec
+import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
