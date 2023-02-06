@@ -22,13 +22,6 @@ val allDependencies = PlayCrossCompilation.dependencies(
     "org.mockito"       % "mockito-core"          % "2.28.2"          % "test",
     "uk.gov.hmrc"       %% "hmrctest"             % "3.10.0-play-26"   % "test"
   ),
-  play26 = Seq(
-    "com.typesafe.play" %% "play-json" % "2.6.13",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-26",
-    "com.kenshoo"       %% "metrics-play"         % "2.6.19_0.7.0",
-    "uk.gov.hmrc"       %% "bootstrap-backend-play-26"    % "5.11.0"
-
-  ),
   play27 = Seq(
     "com.typesafe.play" %% "play-json" % "2.7.4",
     "uk.gov.hmrc" %% "domain" % "6.0.0-play-27",
