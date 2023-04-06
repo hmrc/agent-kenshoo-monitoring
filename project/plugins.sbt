@@ -6,16 +6,18 @@ addSbtPlugin("uk.gov.hmrc" % "sbt-auto-build" % "3.3.0")
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.6.1")
 
-addSbtPlugin("uk.gov.hmrc" % "sbt-play-cross-compilation" % "2.0.0")
+addSbtPlugin("uk.gov.hmrc" % "sbt-play-cross-compilation" % "2.0.0") // TODO due to remove
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "1.0.0")
 
-addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.16")
+addSbtPlugin("com.lucidchart" % "sbt-scalafmt" % "1.16" % "2.0")
+
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.3.4")
 
 val playPlugin =
   if (sys.env.get("PLAY_VERSION").contains("2.8"))
     "com.typesafe.play" % "sbt-plugin" % "2.8.6"
-  else if (sys.env.get("PLAY_VERSION").contains("2.7"))
+  else if (sys.env.get("PLAY_VERSION").contains("2.7")) //TODO remove 26 & 27  after updating HMRC_TEST dependency
     "com.typesafe.play" % "sbt-plugin" % "2.7.7"
   else
     "com.typesafe.play" % "sbt-plugin" % "2.6.25"

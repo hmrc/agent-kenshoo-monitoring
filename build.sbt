@@ -14,42 +14,27 @@ lazy val scoverageSettings = {
   )
 }
 
-val allDependencies = PlayCrossCompilation.dependencies(
-  shared = Seq(
-    "org.scalatest" %% "scalatest" % "3.0.6" % Test,
+val allDependencies = Seq(
+    "org.scalatest" %% "scalatest" % "3.2.15" % Test,
     "org.pegdown" % "pegdown" % "1.6.0" % Test,
-    "org.scalacheck" %% "scalacheck" % "1.14.0" % Test,
-    "org.mockito"       % "mockito-core"          % "2.28.2"          % "test",
-    "uk.gov.hmrc"       %% "hmrctest"             % "3.10.0-play-26"   % "test"
-  ),
-  play26 = Seq(
-    "com.typesafe.play" %% "play-json" % "2.6.13",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-26",
-    "com.kenshoo"       %% "metrics-play"         % "2.6.19_0.7.0",
-    "uk.gov.hmrc"       %% "bootstrap-backend-play-26"    % "5.11.0"
+    "org.scalacheck" %% "scalacheck" % "1.17.0" % Test,
+    "org.mockito"       % "mockito-core"          % "5.2.0"          % "test",
+    "uk.gov.hmrc"       %% "hmrctest"             % "3.10.0-play-26"   % "test",
 
-  ),
-  play27 = Seq(
-    "com.typesafe.play" %% "play-json" % "2.7.4",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-27",
+    "com.typesafe.play"      %% "play-json"          % "2.9.4",
+    "uk.gov.hmrc" %% "domain" % "8.2.0-play-28",
     "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
-  ),
-  play28 = Seq(
-    "com.typesafe.play"      %% "play-json"          % "2.8.1",
-    "uk.gov.hmrc" %% "domain" % "6.0.0-play-28",
-    "com.kenshoo" %% "metrics-play" % "2.7.3_0.8.2",
-    "uk.gov.hmrc" %% "bootstrap-backend-play-27" % "5.11.0"
+    "uk.gov.hmrc" %% "bootstrap-backend-play-28" % "7.15.0"
   )
-)
+
 
 lazy val root = (project in file("."))
   .settings(
     name := "agent-kenshoo-monitoring",
     organization := "uk.gov.hmrc",
-    scalaVersion := "2.12.12",
-    crossScalaVersions := List("2.12.12"),
-    majorVersion := 4,
+    scalaVersion := "2.12.12", // TODO DUE to change
+    crossScalaVersions := List("2.12.12","2.13.8"),
+    majorVersion := 5,
     isPublicArtefact := true,
     scoverageSettings,
     resolvers ++= Seq(
@@ -57,4 +42,4 @@ lazy val root = (project in file("."))
     ),
     libraryDependencies ++= allDependencies,
   )
-  .settings(PlayCrossCompilation.playCrossCompilationSettings)
+
