@@ -29,4 +29,6 @@ lazy val root = (project in file("."))
       Resolver.typesafeRepo("releases"),
     ),
     libraryDependencies ++= LibDependencies.compile ++ LibDependencies.test,
-  )
+  )//v Required to prevent https://github.com/scalatest/scalatest/issues/1427 (unstable build due to failure to read test reports)
+  .disablePlugins(JUnitXmlReportPlugin)
+
