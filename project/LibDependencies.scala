@@ -10,7 +10,7 @@ object LibDependencies {
     "uk.gov.hmrc"            %% "bootstrap-backend-play-28" % bootstrapVer
   )
 
-  lazy val test = Seq(
+  val test = Seq(
     "uk.gov.hmrc"            %% "bootstrap-test-play-28"    % bootstrapVer % Test,
     "org.scalatest"          %% "scalatest"                 % "3.2.15"     % Test,
     "org.pegdown"            %  "pegdown"                   % "1.6.0"      % Test,
