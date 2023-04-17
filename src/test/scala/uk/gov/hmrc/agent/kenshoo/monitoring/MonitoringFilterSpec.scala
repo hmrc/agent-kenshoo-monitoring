@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@ import akka.actor.ActorSystem
 import akka.stream.{ActorMaterializer, Materializer}
 import com.codahale.metrics.MetricRegistry
 import org.mockito.Mockito.mock
-import org.scalatest.Matchers
 import play.api.http.HttpEntity
 import play.api.mvc.{Headers, RequestHeader, ResponseHeader, Result}
 import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
+import org.scalatest.matchers.should.Matchers._
 
 import scala.concurrent.{ExecutionContext, Future}
 
