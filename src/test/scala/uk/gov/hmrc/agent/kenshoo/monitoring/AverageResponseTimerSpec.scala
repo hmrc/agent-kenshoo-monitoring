@@ -35,9 +35,7 @@ class AverageResponseTimerSpec extends UnitSpec {
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
-    override def matches(argument: lang.Long): Boolean = argument >= l
-  }
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = (argument: lang.Long) => argument >= l
 
   "timer" should {
     "update kenshoo timer for service if one already exists" in new AverageResponseTimerTest {
@@ -70,6 +68,6 @@ class AverageResponseTimerSpec extends UnitSpec {
 }
 
 class AverageResponseTimerTest extends AverageResponseTimer with MockitoSugar {
-  val kenshooRegistry = mock[MetricRegistry]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
   val kenshooTimer: Timer = mock[Timer]
 }

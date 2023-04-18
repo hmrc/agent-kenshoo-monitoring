@@ -38,12 +38,11 @@ class MonitoringFilterSpec extends UnitSpec {
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
   "monitoring filter" should {
-    // TODO address broken test setup
-//    "monitor known incoming requests" in new MonitoringFilterTestImp {
-//      val reqHeader: TestRequestHeader = TestRequestHeader("/agent/agentcode", "GET")
-//      await(apply(_ => Future(Result(ResponseHeader(200), HttpEntity.NoEntity)))(reqHeader))
-//      assertRequestIsMonitoredAs("API-Agent-GET")
-//    }
+    "monitor known incoming requests" in new MonitoringFilterTestImp {
+      val reqHeader: TestRequestHeader = TestRequestHeader("/agent/agentcode", "GET")
+      await(apply(_ => Future(Result(ResponseHeader(200), HttpEntity.NoEntity)))(reqHeader))
+      assertRequestIsMonitoredAs("API-Agent-GET")
+    }
 
     "do not monitor unknown incoming requests" in new MonitoringFilterTestImp {
       val reqHeader: TestRequestHeader = TestRequestHeader("/agent/client/empref", "GET")

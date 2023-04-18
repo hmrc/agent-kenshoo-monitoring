@@ -36,7 +36,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
   def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
     override def matches(argument: lang.Long): Boolean = argument >= l
@@ -61,7 +61,7 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 }
 
 class HttpAPIMonitorTest extends HttpAPIMonitor with MockitoSugar {
-  val kenshooRegistry = mock[MetricRegistry]
-  val kenshooTimer = mock[Timer]
-  val errorMeter4xx = mock[Meter]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
+  val kenshooTimer: Timer = mock[Timer]
+  val errorMeter4xx: Meter = mock[Meter]
 }
