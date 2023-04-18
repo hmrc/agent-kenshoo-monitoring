@@ -38,9 +38,7 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
-    override def matches(argument: lang.Long): Boolean = argument >= l
-  }
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = (argument: lang.Long) => argument >= l
 
   "monitor" should {
     "record invocation rate, average response time and error rate" in new HttpAPIMonitorTest {

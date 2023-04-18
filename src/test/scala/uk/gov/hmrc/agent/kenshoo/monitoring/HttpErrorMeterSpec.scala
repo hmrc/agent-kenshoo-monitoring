@@ -137,9 +137,9 @@ class HttpErrorMeterSpec extends UnitSpec {
 }
 
 class HttpErrorRateMeterTest extends HttpErrorRateMeter with MockitoSugar {
-  val kenshooRegistry = mock[MetricRegistry]
-  val errorMeter4xx = mock[Meter]
-  val errorMeter5xx = mock[Meter]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
+  val errorMeter4xx: Meter = mock[Meter]
+  val errorMeter5xx: Meter = mock[Meter]
   given(kenshooRegistry.meter("Http4xxErrorCount-servicename")).willReturn(errorMeter4xx)
   given(kenshooRegistry.meter("Http5xxErrorCount-servicename")).willReturn(errorMeter5xx)
 }
