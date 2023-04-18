@@ -49,9 +49,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
     Mockito.reset(testEndpointTimer)
   }
 
-  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
-    override def matches(argument: lang.Long): Boolean = argument >= l
-  }
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = (argument: lang.Long) => argument >= l
 
   private val monitoredHttpClient = new MonitoredHttpClientTest(http, kenshooRegistry, httpAPIs)
 
@@ -98,6 +96,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
     }
   }
 
+  // TODO potentially flakey?
   "doPostEmpty" should {
 
     "time the request if the url is allow-listed" in {
