@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.agent.kenshoo.monitoring.support
 
-import org.scalatest.{Matchers, OptionValues}
+import org.scalatest.OptionValues
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.matchers.must.Matchers
 import play.api.libs.json.JsValue
 import play.api.mvc.Result
 import play.api.test.Helpers

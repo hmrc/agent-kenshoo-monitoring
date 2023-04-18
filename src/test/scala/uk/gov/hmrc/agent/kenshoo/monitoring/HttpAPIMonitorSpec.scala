@@ -22,11 +22,11 @@ import com.codahale.metrics.{Meter, Timer}
 import org.mockito.BDDMockito._
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
-import org.scalatest.Matchers
 
 import scala.concurrent.Future
 import com.codahale.metrics.MetricRegistry
 import org.mockito.ArgumentMatcher
+import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpException}
@@ -36,11 +36,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
-    override def matches(argument: lang.Long): Boolean = argument >= l
-  }
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = (argument: lang.Long) => argument >= l
 
   "monitor" should {
     "record invocation rate, average response time and error rate" in new HttpAPIMonitorTest {
@@ -61,7 +59,7 @@ class HttpAPIMonitorSpec extends UnitSpec with Matchers {
 }
 
 class HttpAPIMonitorTest extends HttpAPIMonitor with MockitoSugar {
-  val kenshooRegistry = mock[MetricRegistry]
-  val kenshooTimer = mock[Timer]
-  val errorMeter4xx = mock[Meter]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
+  val kenshooTimer: Timer = mock[Timer]
+  val errorMeter4xx: Meter = mock[Meter]
 }

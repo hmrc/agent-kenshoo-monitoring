@@ -18,13 +18,13 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import java.util.concurrent.TimeUnit
 import java.{lang, util}
-
 import com.codahale.metrics.{MetricRegistry, Timer}
 import org.mockito.ArgumentMatcher
 import org.mockito.ArgumentMatchers._
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.verify
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 
@@ -33,11 +33,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class AverageResponseTimerSpec extends UnitSpec {
 
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = new ArgumentMatcher[lang.Long] {
-    override def matches(argument: lang.Long): Boolean = argument >= l
-  }
+  def greaterThanOrEqualTo(l: Long): ArgumentMatcher[lang.Long] = (argument: lang.Long) => argument >= l
 
   "timer" should {
     "update kenshoo timer for service if one already exists" in new AverageResponseTimerTest {
@@ -70,6 +68,6 @@ class AverageResponseTimerSpec extends UnitSpec {
 }
 
 class AverageResponseTimerTest extends AverageResponseTimer with MockitoSugar {
-  val kenshooRegistry = mock[MetricRegistry]
+  val kenshooRegistry: MetricRegistry = mock[MetricRegistry]
   val kenshooTimer: Timer = mock[Timer]
 }
