@@ -31,7 +31,7 @@ trait MonitoredHttpClient extends HttpAPIMonitor {
   private case class HttpAPI(urlPattern: String, name: String)
 
   private case class HttpAPINames(urlPatternAndName: Map[String, String]) {
-    val httpAPIs = urlPatternAndName.map { httpApi => HttpAPI(httpApi._1, httpApi._2) }
+    val httpAPIs: Iterable[HttpAPI] = urlPatternAndName.map { httpApi => HttpAPI(httpApi._1, httpApi._2) }
 
     def nameFor(method: String, url: String): Option[String] = {
       httpAPIs.find(downstreamService => url.matches(downstreamService.urlPattern)) match {
