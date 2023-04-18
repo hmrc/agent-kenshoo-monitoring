@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
     name := "agent-kenshoo-monitoring",
     organization := "uk.gov.hmrc",
     scalaVersion := scala2_12,
-    crossScalaVersions := List(scala2_12, scala2_13),
+    crossScalaVersions := List(scala2_12),
     majorVersion := 5,
     isPublicArtefact := true,
     scoverageSettings,
