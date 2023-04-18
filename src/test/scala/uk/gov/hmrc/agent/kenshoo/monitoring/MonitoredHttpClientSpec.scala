@@ -96,7 +96,7 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
     }
   }
 
-  // TODO potentially flakey?
+  // TODO scala 2.13 build fails??
   "doPostEmpty" should {
 
     "time the request if the url is allow-listed" in {
