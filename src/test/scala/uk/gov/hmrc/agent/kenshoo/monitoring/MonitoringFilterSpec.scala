@@ -20,12 +20,11 @@ import akka.actor.ActorSystem
 import akka.stream.{ActorMaterializer, Materializer}
 import com.codahale.metrics.MetricRegistry
 import org.mockito.Mockito.mock
-import org.scalatest.matchers.must.Matchers
 import play.api.http.HttpEntity
 import play.api.mvc.{Headers, RequestHeader, ResponseHeader, Result}
 import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 import uk.gov.hmrc.http.HeaderCarrier
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should._
 import play.api.libs.typedmap.TypedMap
 import play.api.mvc.request.{RemoteConnection, RequestTarget}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -33,6 +32,7 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
+// This spec was under a play-25 folder...
 class MonitoringFilterSpec extends UnitSpec {
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
