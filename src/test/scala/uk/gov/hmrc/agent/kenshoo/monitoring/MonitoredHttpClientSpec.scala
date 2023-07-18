@@ -18,6 +18,7 @@ package uk.gov.hmrc.agent.kenshoo.monitoring
 
 import java.lang
 import java.util.concurrent.TimeUnit
+import org.mockito.ArgumentMatchers.any
 import com.codahale.metrics.{MetricRegistry, Timer}
 import org.mockito.{ArgumentMatcher, Mockito}
 import org.mockito.ArgumentMatchers.longThat
@@ -26,7 +27,7 @@ import org.mockito.Mockito.{never, times, verify}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
 import uk.gov.hmrc.agent.kenshoo.monitoring.support.UnitSpec
 import uk.gov.hmrc.http.HttpReads.Implicits._
 
@@ -100,18 +101,17 @@ class MonitoredHttpClientSpec extends UnitSpec with MockitoSugar with BeforeAndA
   "doPostEmpty" should {
 
     "time the request if the url is allow-listed" in {
-
       given(kenshooRegistry.timer("Timer-ConsumedAPI-testEndpoint-POST")).willReturn(testEndpointTimer)
-      given(http.POSTEmpty[HttpResponse]("/test/endpoint")).willReturn(Future.successful(HttpResponse(200, "")))
 
+      given(http.POSTEmpty[HttpResponse](any[String], any[Seq[(String, String)]])(any[HttpReads[HttpResponse]], any[HeaderCarrier], any[ExecutionContext])).willReturn(Future.successful(HttpResponse(200, "")))
       await(monitoredHttpClient.doEmptyPost("/test/endpoint"))
+      Mockito.verify(http).POSTEmpty[HttpResponse]("/test/endpoint")
       verify(testEndpointTimer).update(longThat(greaterThanOrEqualTo(10L)), org.mockito.ArgumentMatchers.eq(TimeUnit.NANOSECONDS))
     }
 
     "not time the request if the url is allow-listed" in  {
-
-        given(http.POSTEmpty[HttpResponse]("/test/notmonitored")).willReturn(Future.successful(HttpResponse(200, "")))
-
+      given(http.POSTEmpty[HttpResponse](any[String], any[Seq[(String, String)]])(any[HttpReads[HttpResponse]], any[HeaderCarrier], any[ExecutionContext])).willReturn(Future.successful(HttpResponse(200, "")))
+      Mockito.verify(http).POSTEmpty[HttpResponse]("/test/notmonitored")
         await(monitoredHttpClient.doEmptyPost("/test/notmonitored"))
         verify(kenshooRegistry, never()).getTimers()
       }

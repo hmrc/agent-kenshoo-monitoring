@@ -12,13 +12,12 @@ object LibDependencies {
 
   val test = Seq(
     "uk.gov.hmrc"            %% "bootstrap-test-play-28"    % bootstrapVer % Test,
-    "org.scalatest"          %% "scalatest"                 % "3.2.15"     % Test,
+    "org.scalatest"          %% "scalatest"                 % "3.2.10"     % Test,
     "org.pegdown"            %  "pegdown"                   % "1.6.0"      % Test,
-    "org.scalacheck"         %% "scalacheck"                % "1.17.0"     % Test,
-    "org.mockito"            %  "mockito-core"              % "5.3.0"      % Test,
+    "org.scalacheck"         %% "scalacheck"                % "1.15.4"     % Test,
+    "org.mockito"            %  "mockito-core"              % "4.0.0"      % Test,
     "org.scalatestplus"      %% "mockito-3-4"               % "3.2.10.0"   % Test,
     "com.vladsch.flexmark"   %  "flexmark-all"              % "0.62.2"     % Test,
     "org.scalatestplus.play" %% "scalatestplus-play"        % "5.1.0"      % Test
   )
-
 }
