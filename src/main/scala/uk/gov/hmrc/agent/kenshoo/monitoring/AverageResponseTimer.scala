@@ -39,3 +39,4 @@ trait AverageResponseTimer {
     s"Timer-$serviceName"
   }
 }
+

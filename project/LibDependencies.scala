@@ -20,5 +20,4 @@ object LibDependencies {
     "com.vladsch.flexmark"   %  "flexmark-all"              % "0.62.2"     % Test,
     "org.scalatestplus.play" %% "scalatestplus-play"        % "5.1.0"      % Test
   )
-
 }

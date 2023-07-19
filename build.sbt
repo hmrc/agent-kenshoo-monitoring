@@ -13,15 +13,14 @@ lazy val scoverageSettings = {
   )
 }
 
-val scala2_12 = "2.12.12"
 val scala2_13 = "2.13.8"
 
 lazy val root = (project in file("."))
   .settings(
     name := "agent-kenshoo-monitoring",
     organization := "uk.gov.hmrc",
-    scalaVersion := scala2_12,
-    crossScalaVersions := List(scala2_12),
+    scalaVersion := scala2_13,
+    crossScalaVersions := List(scala2_13),
     majorVersion := 5,
     isPublicArtefact := true,
     scoverageSettings,
