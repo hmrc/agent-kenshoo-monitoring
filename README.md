@@ -1,14 +1,17 @@
-# Agent Monitoring Wrapper
+# Agent Kenshoo Monitoring
 
 ![](https://img.shields.io/github/v/release/hmrc/agent-kenshoo-monitoring)
 
 Integrates graphite metrics via Kenshoo into Play applications, for in-bound and out-bound calls. 
-Allow-listing of URLs is possible for both.
+Allow-listing of URLs is possible for both. This library is currently intended for use by the Agent Services team. 
 
-## Note
+## Changelog
 
-This library is currently intended for use by the Agent Services team. Since v4.5.0 the library no longer has a dependency on HttpVerbs. You will need an instance of HttpClient and an implicit ExecutionContext defined in scope.
-Since v5, available across Scala versions 2.12 and 2.13.
+- v5.5.0 remove support for scala version 2.12
+- v5.4.0 temp remove support for scala 2.13
+- v5.x.x available across Scala versions 2.12 and 2.13.
+- v4.5.0 the library no longer has a dependency on HttpVerbs. You will need an instance of HttpClient and an implicit ExecutionContext defined in scope.
+
 
 ### License
 
